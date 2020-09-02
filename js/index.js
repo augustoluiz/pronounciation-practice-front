@@ -66,20 +66,21 @@ function carregaExerciciosUnit(idUnit) {
 
     let idHomeExercicios = idHome.querySelector('#exercicios');
 
-    let listExercises = ExerciseController.addExerciseCards(idUnit);
-    listExercises.forEach(exercise => idHomeExercicios.innerHTML += exercise);
-
-    let exercises = ExerciseController.getExercisesByIdUnit(idUnit);
-    exercises.forEach(exercise => {
-        if (!exercise.bloqueado) {
-            let cardExercise = document.getElementById(`idCardExercise${exercise.id}`);
-            cardExercise.addEventListener('click', function (e) {
-                e.preventDefault();
-                limpaHome();
-                itemExercicioClicado(idUnit, exercise.id);
-            })
-        }
-    })
+    ExerciseController.addExerciseCards((exercises)=>{
+        ExerciseView.montaExercises(exercises).forEach(exerciseHTML => idHomeExercicios.innerHTML += exerciseHTML);
+    }, idUnit);
+    ExerciseController.getExercisesByIdUnit((exercises) => {
+        exercises.forEach(exercise => {
+            if (!exercise.bloqueado) {
+                let cardExercise = document.getElementById(`idCardExercise${exercise.id}`);
+                cardExercise.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    limpaHome();
+                    itemExercicioClicado(idUnit, exercise.id);
+                })
+            }
+        });
+    }, idUnit)
 }
 
 function removeAcaoLinkHome(idUnit) {
@@ -148,7 +149,7 @@ function startRecognition(textoQuestao, pTextoFalado, micIcon, idQuestion) {
         let porcentagemAcerto = Math.round(calculaAcerto(textoQuestao, novoTexto));
         if (porcentagemAcerto >= 80) {
             pTextoFalado.style.color = "green";
-        } else if (porcentagemAcerto >= 50 ){
+        } else if (porcentagemAcerto >= 50) {
             pTextoFalado.style.color = "orange";
         } else {
             pTextoFalado.style.color = "red";
@@ -180,13 +181,13 @@ function formataTexto(textoOriginal, textoFalado) {
     return `${textoFaladoFormatado.join('')}`;
 }
 
-function calculaAcerto(textoQuestao, textoFalado){
+function calculaAcerto(textoQuestao, textoFalado) {
     let textoQuestaoArray = textoQuestao.split(' ');
     let textoFaladoFormatadoArray = textoFalado.split(' ');
     let qtdAcertos = 0;
 
-    for(let i = 0; i < textoQuestaoArray.length; i++){
-        if(textoQuestaoArray[i] == textoFaladoFormatadoArray[i]){
+    for (let i = 0; i < textoQuestaoArray.length; i++) {
+        if (textoQuestaoArray[i] == textoFaladoFormatadoArray[i]) {
             qtdAcertos = qtdAcertos + 1;
         }
     }

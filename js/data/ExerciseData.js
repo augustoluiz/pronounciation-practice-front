@@ -151,7 +151,13 @@ class ExerciseData {
         return dataExercise;
     }
 
-    getDadosByIdUnit(idUnit) {
+    getDadosByIdUnit(cb, idUnit) {
+        return ExerciseService.getDadosByIdUnit(cb, idUnit);
+        //return dataExercise.filter(exercise => exercise.idUnit == idUnit);
+    }
+
+    getDadosByIdUnit1(idUnit) {
+        //return ExerciseService.getDadosByIdUnit(cb, idUnit);
         return dataExercise.filter(exercise => exercise.idUnit == idUnit);
     }
 
