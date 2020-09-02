@@ -1,0 +1,574 @@
+body {
+    margin: 0;
+    background-color: #f5f5f5 !important;
+  }
+
+  .navbar {
+    visibility: hidden;
+    background-color: #2a7ae4;
+    display: flex !important;
+    flex-wrap: wrap;
+    flex-flow: row;
+    justify-content: space-between !important;
+  }
+
+  .navbar img{
+    width: 20%;
+    height: 20%;
+  }
+
+  .menu-lateral {
+    visibility: visible !important;
+    margin: 0;
+    padding: 0;
+    margin-top: -12%;
+    width: 400px;
+    background-color: #2a7ae4;
+    position: fixed;
+    height: 100%;
+    overflow:auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+  .menu-lateral .log-out {
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column;
+    justify-content: center;
+  }
+
+  .menu-lateral .log-out button {
+    text-align: center;
+    margin-left: 30%;
+    margin-right: 30%;
+    background-color: #2a7ae4;
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  .menu-lateral .log-out button:hover {
+    background-color: #ffffff;
+    color: #2a7ae4;
+  }
+
+  .menu-lateral a {
+    display: block;
+    color: #ffffff;
+    padding: 16px;
+    text-decoration: none;
+    font-size: 18px;
+  }
+   
+  .menu-lateral p {
+    text-align: center;
+    color: #ffffff;
+    font-size: 0.8em;
+  }
+
+  .menu-lateral img{
+     width: 20em;
+     margin-left: 10%;
+     margin-right: 10%;
+     text-align: center;
+  }
+
+  .menu-lateral a.selecionado {
+    background-color: #ffffff;
+    color: #2a7ae4;
+  }
+
+  .menu-lateral a:link {
+    text-decoration: none;
+  }
+  
+  .menu-lateral a:hover:not(.selecionado) {
+    background-color: #ffffff;
+    color: #19529c;
+  }
+  
+  div.content {
+    margin-left: 400px;
+    margin-top: -11%;
+    padding: 1px 16px;
+    background-color: #f5f5f5;
+  }
+
+  div.content p{
+    font-size: 1.30em;
+  }
+
+  div.content .home-unit-nome {
+    margin-bottom: 1em;
+  }
+
+  div.content .home-unit-nome a{
+    font-weight: bold;
+    font-size: 2.5em;
+    color: #353434;
+  }
+
+  div.content #exercicios {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  div.content #exercicios .card{
+     margin-left: 1%;
+     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+     cursor: pointer;
+  }
+
+  div.content #exercicios .border-light{
+     display: flex;
+     flex-direction: column;
+     flex-wrap: wrap;
+     margin: 0.75em;
+     width: 20rem;
+  }
+
+  div.content #exercicios .border-light .card-header{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.7em;
+ }
+
+  div.content #exercicios .card-body{
+     text-align: center;
+     display: flex;
+     flex-wrap: wrap;
+     flex-direction: column;
+     justify-content: space-between;
+     padding: 10%;
+  }
+
+  div.content #exercicios .card-body #exercicios-qtd-questoes{
+     width: 100%;
+     max-height: 70%;
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: center;
+  }
+
+  div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+    font-size: 4em;
+    margin-bottom: 5%;
+    text-align: center;
+    width: 100%;
+  }
+
+  div.content #exercicios .card-body #exercicios-qtd-questoes h2{
+    width: 100%;
+  }
+
+  div.content #exercicios .card-body #exercicios-qtd-questoes .lock{
+    font-size: 4em;
+    margin-top: 5%;
+    color: #999a9b;
+  }
+
+  div.content #exercicios .card-body .barra-progresso{
+    margin-top: 10%;
+  }
+
+  div.content #exercicios .card-body .barra-progresso .progress{
+    background-color: #e9e8e8 !important;
+  }
+
+  div.content .card{
+      margin-top: 0.65%;
+      display: flex;
+      flex-direction: column;
+  }
+
+  div.content #questoes .card .card-body {
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  div.content #questoes .card .video-questao{
+    margin: auto !important;
+    justify-content: center !important;
+  }
+
+  div.content #questoes .card .video-questao div{
+    margin: auto;
+    margin-bottom: 2%;
+  }
+  
+  div.content .card .card-body .card-text {
+    display: flex;
+    justify-content: flex-end;
+    width: 60%;
+    margin-right: 10%;
+  }
+
+  div.content .card .card-body .card-text p{
+    margin: auto;
+    margin-left: 0;
+  }
+
+  div.content .card .btn-video{
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column;
+  }
+
+  div.content .card .btn-video button{
+    text-align: center;
+    max-width: 50%;
+    margin: auto;
+  }
+
+  div.content .card .btn-video button:hover{
+    background-color: #ffffff;
+    color: #2262b4;
+  }
+
+  div.content .card .card-body .score-icons {
+    display: flex;
+    justify-content: flex-end;
+    width: 15%;
+  }
+
+  div.content .card .card-body .score-icons .score-icon-item {
+    margin: auto;
+    text-align: center;
+    margin-right: 0;
+  }
+
+  div.content .card .card-body .score-icons .score-icon-item .score {
+    font-size: x-large;
+    text-align: center;
+    margin: auto;
+  }
+
+  div.content .card .card-body .score-icons .score-icon-item .lock {
+    color: #999a9b;
+  }
+
+  div.content .card .card-body .score-icons .score-icon-item .mic {
+    color: #999a9b;
+    cursor: pointer;
+  }
+
+  div.content .card .card-body .score-icons .score-icon-item .mic:hover {
+    color: #000000;
+  }
+
+  .invisible {
+      display: none;
+  }
+  
+  .progress {
+      background-color: #639eec !important;
+  }
+
+  .progress-bar {
+      background-color: #19529c !important;
+  }
+
+  @media screen and (max-width: 1120px) {
+
+    .menu-lateral {
+      margin-top: -13%;
+    }
+
+    div.content #questoes .card .video-questao div iframe{
+      width: 30em !important;
+    }
+    div.content #exercicios .border-light{
+      width: 55rem;
+   }
+
+  @media screen and (max-width: 1050px) {
+
+    .menu-lateral {
+      margin-top: -13%;
+    }
+
+    div.content #questoes .card .video-questao div iframe{
+      width: 30em !important;
+    }
+    div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+      font-size: 7em;
+   }
+
+   div.content #exercicios .card-body #exercicios-qtd-questoes h2{
+      font-size: 3.5em;
+   }
+ 
+   div.content #exercicios .card-body #exercicios-qtd-questoes .lock{
+      font-size: 3.5em;
+      text-align: center;
+      margin: auto;
+   }
+  }
+
+  @media screen and (max-width: 950px) {
+
+    .menu-lateral {
+      margin-top: -13%;
+    }
+
+    div.content #questoes .card .video-questao div iframe{
+      width: 25em !important;
+    }
+    div.content #questoes .card .video-questao div iframe{
+      width: 20em !important;
+    }
+    div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+      font-size: 5.75em;
+   }
+
+   div.content #exercicios .card-body #exercicios-qtd-questoes h2{
+      font-size: 3em;
+   }
+ 
+   div.content #exercicios .card-body #exercicios-qtd-questoes .lock{
+      font-size: 3em;
+   }
+  }
+
+  @media screen and (max-width: 850px) {
+
+    .menu-lateral {
+      margin-top: -13%;
+    }
+    
+    div.content #questoes .card .video-questao div iframe{
+      width: 20em !important;
+    }
+
+    div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+      font-size: 4em;
+   }
+
+   div.content #exercicios .card-body #exercicios-qtd-questoes h2{
+      font-size: 2.5em;
+   }
+ 
+   div.content #exercicios .card-body #exercicios-qtd-questoes .lock{
+      font-size: 2.5em;
+   }
+  }
+
+  @media screen and (max-width: 790px) {
+
+    .menu-lateral {
+      margin-top: -13%;
+    }
+
+    div.content #questoes .card .video-questao div iframe{
+      width: 15em !important;
+    }
+
+    div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+      font-size: 3.5em;
+    }
+  }
+
+  @media screen and (max-width: 720px) {
+    
+    .menu-lateral {
+      margin-top: -13%;
+    }
+
+    div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+      font-size: 3.25em;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+   
+    .navbar {
+      visibility: visible;
+    }
+
+    .menu-lateral {
+      width: 100%;
+      height: auto;
+      position: relative;
+      margin-top: auto;
+    }
+
+    .menu-lateral img {
+      margin-left: 25%;
+      margin-right: 25%;
+    }
+
+    div.content {
+      margin-left: 0;
+      margin-top: 2em;
+    }
+    div.content .card{margin-top: 1%;}
+    div.content #questoes .card .video-questao div iframe{
+      width: 30em !important;
+    }
+    div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+      font-size: 7em;
+    }
+
+    div.content #exercicios .card-body #exercicios-qtd-questoes h2{
+      font-size: 3.5em;
+    }
+ 
+    div.content #exercicios .card-body #exercicios-qtd-questoes .lock{
+      font-size: 3.5em;
+    }
+    div.content .home-unit-nome a{
+      font-size: 1.5em;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+
+    div.content {
+      margin-left: 0;
+      margin-top: 2em;
+    }
+
+    .menu-lateral {
+      margin-top: auto;
+      height: 100%;
+    }
+
+    .menu-lateral img {
+      width: 350px;
+      height: 100%;
+      margin-left: 22%;
+      margin-right: 25%;
+    }
+
+    div.content #questoes .card .video-questao div iframe{
+      width: 25em !important;
+    }
+    div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+      font-size: 5em;
+    }
+
+    div.content #exercicios .card-body #exercicios-qtd-questoes h2{
+      font-size: 2.5em;
+    }
+ 
+    div.content #exercicios .card-body #exercicios-qtd-questoes .lock{
+      font-size: 2.5em;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+
+    div.content {
+      margin-left: 0;
+      margin-top: 2em;
+    }
+
+    .menu-lateral {
+      margin-top: auto;
+      height: 100%;
+    }
+
+    .menu-lateral img {
+      width: 300px;
+      height: 100%;
+      margin-left: 20%;
+      margin-right: 15%;
+    }
+
+  }
+
+  @media screen and (max-width: 470px) {
+
+    div.content {
+      margin-left: 0;
+      margin-top: 2em;
+    }
+
+    .menu-lateral {
+      margin-top: auto;
+    }
+
+    .menu-lateral img {
+      width: 250px;
+      margin-left: 25%;
+      margin-right: 25%;
+    }
+
+    div.content #questoes .card .video-questao div iframe{
+      width: 20em !important;
+    }
+    div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+      font-size: 4em;
+    }
+
+    div.content #exercicios .card-body #exercicios-qtd-questoes h2{
+      font-size: 2em;
+    }
+ 
+    div.content #exercicios .card-body #exercicios-qtd-questoes .lock{
+      font-size: 2em;
+    }
+  }
+
+  @media screen and (max-width: 430px) {
+
+    .menu-lateral img {
+      margin-left: 20%;
+      margin-right: 20%;
+    }
+
+    .menu-lateral {
+      margin-top: auto;
+    }
+
+    div.content {
+      margin-top: 2em;
+    }
+
+  }
+
+  @media screen and (max-width: 400px) {
+    
+    .navbar {
+      visibility: visible;
+    }
+
+    .menu-lateral {
+      width: 100%;
+      height: auto;
+      position: relative;
+      margin-top: auto;
+    }
+
+    .menu-lateral img {
+      width: 200px;
+      margin-left: 23%;
+      margin-right: 20%;
+    }
+
+    .menu-lateral a {
+      text-align: center;
+      float: none;
+    }
+
+    div.content {
+      margin-top: 2em;
+    }
+
+    div.content .card{margin-top: 2%;}
+
+    div.content #questoes .card .video-questao div iframe{
+      width: 15em !important;
+    }
+    div.content #exercicios .card-body #exercicios-qtd-questoes h1{
+      font-size: 3.5em;
+    }
+
+    div.content #exercicios .card-body #exercicios-qtd-questoes h2{
+      font-size: 1.75em;
+    }
+ 
+    div.content #exercicios .card-body #exercicios-qtd-questoes .lock{
+      font-size: 1.75em;
+    }
+  }
