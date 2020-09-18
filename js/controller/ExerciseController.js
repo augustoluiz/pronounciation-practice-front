@@ -4,10 +4,7 @@ class ExerciseController{
         return ExerciseView.montaNomeUnit(nomeUnit, idUnit);
     }
     static addExerciseCards(cb, idUnit){
-        //return ExerciseView.montaExercises(new ExerciseData().getDadosByIdUnit1(idUnit));
         this.getExercisesByIdUnit(cb, idUnit);
-        //ExerciseView.montaExercises(this.);
-        //return ExerciseView.montaExercises(this.getExercisesByIdUnit(idUnit));
     }
     static getExercisesByIdUnit(cb, idUnit){
         new ExerciseData().getDadosByIdUnit((exercises) =>{

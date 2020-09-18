@@ -67,6 +67,8 @@ function carregaExerciciosUnit(idUnit) {
     let idHomeExercicios = idHome.querySelector('#exercicios');
 
     ExerciseController.addExerciseCards((exercises)=>{
+        //Add ExerciseController.getQtdQuestions
+        //Add ExerciseController.getQtdQuestionsOk
         ExerciseView.montaExercises(exercises).forEach(exerciseHTML => idHomeExercicios.innerHTML += exerciseHTML);
     }, idUnit);
     ExerciseController.getExercisesByIdUnit((exercises) => {
@@ -104,10 +106,13 @@ function itemExercicioClicado(idUnit, idExercise) {
     idHome.appendChild(divQuestions);
 
     let idHomeQuestions = idHome.querySelector('#questoes');
-    let questions = QuestionsController.addQuestions(idExercise);
-    questions.forEach(question => {
-        idHomeQuestions.innerHTML += question;
-    })
+    QuestionsController.addQuestions((questions) => {
+        questions.forEach(question => {
+            idHomeQuestions.innerHTML += question;
+        })
+    }, idExercise)
+    //let questions = QuestionsController.addQuestions(idExercise);
+    
 }
 
 function speechToText(idQuestion) {

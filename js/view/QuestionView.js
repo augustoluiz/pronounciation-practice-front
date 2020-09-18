@@ -1,14 +1,19 @@
 class QuestionView {
     static montaQuestions(listQuestions) {
+        let i = 0;
+        listQuestions.map(question => {
+            question.index = i;
+            i++;
+        })  
         return listQuestions.map(question => {
             let html = `<div class="card" id="idCardQuestion${question.id}">` +
                 `<div class="card-body">` +
                 `<div class="card-text" id="idCardQuestionText${question.id}">` +
                 `<p>${question.texto}</p></div>` +
                 `<div class="score-icons">`;
-            if (!question.bloqueado) {
+            ///if (!question.bloqueado) {
                 html += `<div class="score-icon-item">` +
-                    `<p class="score" id="idScoreQuestion${question.id}">${question.status * 100}%</p>` +
+                    `<p class="score" id="idScoreQuestion${question.id}">${question.stauts} %</p>` +
                     `</div>` +
                     `<div class="score-icon-item">` +
                     `<a class="mic" id="idMic${question.id}" onclick="speechToText(${question.id})">` +
@@ -20,16 +25,17 @@ class QuestionView {
                     `</div>` +
                     `</div>` +
                     `</div>`;
-                if (question.videoLink.length > 0) {
+                if (question.audios.length > 0) {
                     html += `<div class="card-body btn-video">
-                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#idVideoQuestao${question.id}" aria-expanded="false" aria-controls="idVideoQuestao${question.id}">Vídeo</button>
+                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#idVideoQuestao${question.id}" aria-expanded="false" aria-controls="idVideoQuestao${question.id}">Conteúdo Adicional</button>
                             </div>
                             <div class="collapse" id="idVideoQuestao${question.id}">
                                 <div class="card-body video-questao">
-                                ${this.montaVideosQuestao(question.videoLink)}
+                                ${this.montaAudiosuestao(question.audios)}
                                 </div>
                             </div>`;
                 }
+            /*bloqueado
             } else {
                 html += `<a class="lock">` +
                     `<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">` +
@@ -37,20 +43,20 @@ class QuestionView {
                     `<path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z" />` +
                     `</svg>` +
                     `</a></div></div>`;
-            }
+            }*/
             return html;
         })
     }
 
-    static montaVideosQuestao(listVideoLink) {
-        let listVideoLinkFormatado = listVideoLink.map(linkVideo => {
+    static montaAudiosuestao(listAudioLink) {
+        let listAudioLinkFormatado = listAudioLink.map(linkAudio => {
             return `<div>
-                        <iframe width="560" height="315" src="${linkVideo}" frameborder="0"
+                        <iframe width="560" height="315" src="${linkAudio.link}" frameborder="0"
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                         </iframe>
                     </div>`;
         });
-        return listVideoLinkFormatado.reduce((anterior, atual) => atual = `${anterior}${atual}`);
+        return listAudioLinkFormatado.reduce((anterior, atual) => atual = `${anterior}${atual}`);
     }
 
     static montaTextoFalado(idQuestion) {

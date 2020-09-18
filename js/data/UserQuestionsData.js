@@ -168,15 +168,16 @@ let dataUserQuestions = [{
     "concluido": false
 }];
 class UserQuestionsData{
-    getQuestionsByExerciseId(exerciseId){
-        return dataUserQuestions.filter(exercise => exercise.idExercise == exerciseId);
+    getQuestionsByExerciseId(cb, exerciseId){
+        QuestionService.getDadosByIdExercise(cb, exerciseId);
+        //return dataUserQuestions.filter(exercise => exercise.idExercise == exerciseId);
     }
 
     getQtdQuestionsByExerciseId(exerciseId){
-        return this.getQuestionsByExerciseId(exerciseId).length;
+        return 10;
     }
 
     getQtdQuestionsOkByExerciseId(exerciseId){
-        return this.getQuestionsByExerciseId(exerciseId).filter(exercise => exercise.concluido).length;
+        return 1;
     }
 }

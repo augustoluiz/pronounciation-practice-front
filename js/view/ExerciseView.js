@@ -2,7 +2,7 @@ class ExerciseView{
     static montaNomeUnit(nomeUnit, idUnit){
         return `<div class="home-unit-nome" id="idHomeUnit${idUnit}"><a href="">${nomeUnit}</a></div>`;
     }
-    static montaExercises(listExercises){
+    static montaExercises(listExercises, qtdQuestions, qtdQuestionsOk){
         return listExercises.map(exercise => {
             let html = `<div class="card border-light" id="idCardExercise${exercise.id}">`+
                           `<div class="card-header">${exercise.titulo}</div>`+
