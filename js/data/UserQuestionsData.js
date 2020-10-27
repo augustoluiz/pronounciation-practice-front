@@ -168,8 +168,8 @@ let dataUserQuestions = [{
     "concluido": false
 }];
 class UserQuestionsData{
-    getQuestionsByExerciseId(cb, exerciseId){
-        QuestionService.getDadosByIdExercise(cb, exerciseId);
+    getQuestionsByExerciseId(cb, exerciseId, token, usuarioId){
+        QuestionService.getDadosByIdExercise(cb, exerciseId, token, usuarioId);
         //return dataUserQuestions.filter(exercise => exercise.idExercise == exerciseId);
     }
 

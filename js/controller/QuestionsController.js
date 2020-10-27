@@ -1,8 +1,8 @@
 class QuestionsController{
-    static addQuestions(cb, idExercise){
+    static addQuestions(cb, idExercise, token, usuarioId){
         new UserQuestionsData().getQuestionsByExerciseId((questions) => {
-            cb(QuestionView.montaQuestions(questions))
-        },  idExercise);
+            cb(QuestionView.montaQuestions(questions, token))
+        },  idExercise, token, usuarioId);
         //let listQuestions = new UserQuestionsData().getQuestionsByExerciseId(cb, idExercise);
         //return QuestionView.montaQuestions(listQuestions);
     }

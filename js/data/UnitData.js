@@ -76,11 +76,11 @@ class UnitData {
 
     constructor() { }
 
-    getDados(cb, usuarioId) {
-        UnitService.getUnits(cb, usuarioId);
+    getDados(cb, usuarioId, token) {
+        UnitService.getUnits(cb, usuarioId, token, usuarioId);
     }
 
-    getNomeById(idUnit) {
-        return dataUnit.filter(unit => unit.id == idUnit)[0].nome;
+    getNomeById(cb, idUnit, token, usuarioId) {
+        UnitService.getUnitNameById(cb, idUnit, token, usuarioId);
     }
 }

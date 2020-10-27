@@ -1,7 +1,73 @@
+let global_user = {
+    id: null,
+    token: null,
+    login: null,
+    password: null
+}
+let global_token
+
+function validaLogin(event){
+    event.preventDefault();
+    console.log(global_user)
+    global_user.login = event.target.inputEmail.value;
+    global_user.password = event.target.inputPassword.value;
+
+    console.log(global_user)
+
+    RequestLayout.TOKEN("http://localhost:8080/oauth/token", global_user.login, global_user.password, (xhr) => {
+        if(xhr.status == 200){
+            global_token = JSON.parse(xhr.responseText).access_token
+
+            //event.action = "home.html"
+            let data = new Date();
+
+            //setando o tempo de vida do cookie
+            data.setTime(data.getTime() + 60000)
+
+            //criando o cookie
+            document.cookie = `token= ${global_token}; SameSite=None; Secure`;
+            capturaUserId();
+ 
+        } else {
+            event.action = "index.html"
+        } 
+    })
+    
+}
+
+function capturaUserId(){
+    RequestLayout.GETID(`http://localhost:8080/v1/usuario/findIdByLoginSenha/?usuarioLogin=${global_user.login}&usuarioSenha=${global_user.password}`, (id) => {
+        
+        global_user.id = id;
+        document.cookie=`user_id= ${global_user.id}; SameSite=None; Secure`;
+
+        let linkHome = document.createElement("a");
+        linkHome.setAttribute("href", "home.html");
+        document.body.appendChild(linkHome);
+        linkHome.click();
+
+    }, global_user.login, global_user.password, global_token)
+}
+
+function logOut(){
+    let linklogin = document.createElement("a");
+    linklogin.setAttribute("href", "index.html");
+    document.body.appendChild(linklogin);
+    linklogin.click();
+}
+
 function initialize() {
-    addCollapse();
-    addMenuList();
-    carregaExerciciosUnit(1);
+    console.log("Nova Pág"+document.cookie)
+//    RequestLayout.TOKEN("http://localhost:8080/oauth/token", global_user.login, global_user.password, (token) => {
+//        global_token = token.access_token
+        global_user.id = document.cookie.split(";")[1].split("=")[1];
+        global_user.token = document.cookie.split(";")[0].split("=")[1];
+        console.table(global_user)
+        addCollapse();
+        addMenuList(global_user.token);
+        carregaExerciciosUnit(1, global_user.token);
+//    })
+
 }
 
 function limpaHome() {
@@ -20,28 +86,28 @@ function addCollapse() {
     }
 }
 
-function addMenuList() {
+function addMenuList(token) {
     let idMenuLateral = document.getElementById('idMenuLateral');
     UnitController.addMenuList((listUnit) => {
         qtdUnit = listUnit.length;
         listUnit.forEach(itemMenu => {
             idMenuLateral.innerHTML += itemMenu;
         });
-        removeAcaoLink(qtdUnit);
-    }, 1);
+        removeAcaoLink(qtdUnit, token);
+    }, global_user.id, token);
 }
 
-function removeAcaoLink(qtdUnit) {
+function removeAcaoLink(qtdUnit, token) {
     for (let i = 1; i < qtdUnit; i++) {
         let itemMenu = document.getElementById(`idUnitMenu${i}`);
         itemMenu.addEventListener('click', function (e) {
             e.preventDefault()
-            itemMenuClicado(i, qtdUnit - 1);
+            itemMenuClicado(i, qtdUnit - 1, token);
         })
     }
 }
 
-function itemMenuClicado(idUnit, qtdTotal) {
+function itemMenuClicado(idUnit, qtdTotal, token) {
     const classSelecionado = 'selecionado';
     for (let i = 1; i < qtdTotal; i++) {
         let itemMenu = document.getElementById(`idUnitMenu${i}`);
@@ -52,25 +118,28 @@ function itemMenuClicado(idUnit, qtdTotal) {
         }
     }
     limpaHome();
-    carregaExerciciosUnit(idUnit);
+    carregaExerciciosUnit(idUnit, token);
 }
 
-function carregaExerciciosUnit(idUnit) {
-    let idHome = document.getElementById('idHome');
-    idHome.innerHTML = ExerciseController.addUnitNome(idUnit);
-    removeAcaoLinkHome(idUnit);
+function carregaExerciciosUnit(idUnit, token) {
+    ExerciseController.addUnitNome((nome) => {
+        let idHome = document.getElementById('idHome');
+        idHome.innerHTML = ExerciseView.montaNomeUnit(nome.nome, idUnit);
+        removeAcaoLinkHome(idUnit, token);
 
-    let divExercicios = document.createElement('div', 'exercicios');
-    divExercicios.setAttribute('id', 'exercicios');
-    idHome.appendChild(divExercicios);
-
-    let idHomeExercicios = idHome.querySelector('#exercicios');
-
+        let divExercicios = document.createElement('div', 'exercicios');
+        divExercicios.setAttribute('id', 'exercicios');
+        idHome.appendChild(divExercicios);
+        
+    }, idUnit, token, global_user.id)
     ExerciseController.addExerciseCards((exercises)=>{
         //Add ExerciseController.getQtdQuestions
         //Add ExerciseController.getQtdQuestionsOk
-        ExerciseView.montaExercises(exercises).forEach(exerciseHTML => idHomeExercicios.innerHTML += exerciseHTML);
-    }, idUnit);
+        ExerciseView.montaExercises(exercises).forEach(exerciseHTML => {
+            let idHomeExercicios = idHome.querySelector('#exercicios');
+            idHomeExercicios.innerHTML += exerciseHTML
+        });
+    }, idUnit, token, global_user.id);
     ExerciseController.getExercisesByIdUnit((exercises) => {
         exercises.forEach(exercise => {
             if (!exercise.bloqueado) {
@@ -78,44 +147,53 @@ function carregaExerciciosUnit(idUnit) {
                 cardExercise.addEventListener('click', function (e) {
                     e.preventDefault();
                     limpaHome();
-                    itemExercicioClicado(idUnit, exercise.id);
+                    itemExercicioClicado(idUnit, exercise.id, token);
                 })
             }
         });
-    }, idUnit)
+    }, idUnit, token, global_user.id);
 }
 
-function removeAcaoLinkHome(idUnit) {
+function removeAcaoLinkHome(idUnit, token) {
     let nomeHomeUnit = document.getElementById(`idHomeUnit${idUnit}`);
     nomeHomeUnit.addEventListener('click', function (e) {
         e.preventDefault();
         limpaHome();
-        carregaExerciciosUnit(idUnit);
+        carregaExerciciosUnit(idUnit, token);
     })
 }
 
-function itemExercicioClicado(idUnit, idExercise) {
+function itemExercicioClicado(idUnit, idExercise, token) {
     let idHome = document.getElementById('idHome');
-    idHome.innerHTML = ExerciseController.addUnitNome(idUnit);
-    idHome.innerHTML += ExerciseController.addExerciseNome(idExercise);
+    ExerciseController.addUnitNome((nome) => {
+        let idHome = document.getElementById('idHome');
+        idHome.innerHTML = ExerciseView.montaNomeUnit(nome.nome, idUnit);
+        removeAcaoLinkHome(idUnit, token);
 
-    removeAcaoLinkHome(idUnit);
+        let divExercicios = document.createElement('div', 'exercicios');
+        divExercicios.setAttribute('id', 'exercicios');
+        idHome.appendChild(divExercicios);
+        let divQuestions = document.createElement('div', 'questoes');
+        divQuestions.setAttribute('id', 'questoes');
+        idHome.appendChild(divQuestions);
 
-    let divQuestions = document.createElement('div', 'questoes');
-    divQuestions.setAttribute('id', 'questoes');
-    idHome.appendChild(divQuestions);
+        let idHomeQuestions = idHome.querySelector('#questoes');
+        QuestionsController.addQuestions((questions) => {
+                questions.forEach(question => {
+                idHomeQuestions.innerHTML += question;
+            })
+        }, idExercise, token, global_user.id)
+    }, idUnit, token, global_user.id)
+    //idHome.innerHTML += ExerciseController.addExerciseNome(idExercise);
+    //removeAcaoLinkHome(idUnit);
 
-    let idHomeQuestions = idHome.querySelector('#questoes');
-    QuestionsController.addQuestions((questions) => {
-        questions.forEach(question => {
-            idHomeQuestions.innerHTML += question;
-        })
-    }, idExercise)
+    
     //let questions = QuestionsController.addQuestions(idExercise);
     
 }
 
 function speechToText(idQuestion) {
+    console.log(global_token)
     let micIcon = document.getElementById(`idMic${idQuestion}`);
     micIcon.style.color = "red";
 
@@ -162,6 +240,12 @@ function startRecognition(textoQuestao, pTextoFalado, micIcon, idQuestion) {
         let scoreQuestion = document.getElementById(`idScoreQuestion${idQuestion}`);
         scoreQuestion.innerHTML = `${porcentagemAcerto}%`;
         micIcon.style.color = "#999a9b";
+        RequestLayout.POST("http://localhost:8080/v1/usuario-questao", {
+            usuarioId: global_user.id,
+            questaoId: idQuestion,
+            pontuacao: porcentagemAcerto,
+            dataAtualizacao: "2020-08-29T00:00:00"
+        }, global_token)
     })
 }
 

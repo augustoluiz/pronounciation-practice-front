@@ -5,7 +5,7 @@ const rotas_question = {
 class QuestionService {
     constructor(){}
 
-    static getDadosByIdExercise(cb, exerciseId){
-        RequestLayout.GET(`${rotas_question.lista_question_por_exerciseId}${exerciseId}`, cb);
+    static getDadosByIdExercise(cb, exerciseId, token, usuarioId){
+        RequestLayout.GET(`${rotas_question.lista_question_por_exerciseId}${exerciseId}?usuarioId=${usuarioId}`, cb, token, usuarioId);
     }
 }

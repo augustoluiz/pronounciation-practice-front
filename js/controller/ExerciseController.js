@@ -1,18 +1,19 @@
 class ExerciseController{
-    static addUnitNome(idUnit){
-        let nomeUnit = new UnitData().getNomeById(idUnit);
-        return ExerciseView.montaNomeUnit(nomeUnit, idUnit);
+    static addUnitNome(cb, idUnit, token, usuarioId){
+        new UnitData().getNomeById((nome) => {
+            cb(nome)
+        }, idUnit, token, usuarioId)
     }
-    static addExerciseCards(cb, idUnit){
-        this.getExercisesByIdUnit(cb, idUnit);
+    static addExerciseCards(cb, idUnit, token, usuarioId){
+        this.getExercisesByIdUnit(cb, idUnit, token, usuarioId);
     }
-    static getExercisesByIdUnit(cb, idUnit){
+    static getExercisesByIdUnit(cb, idUnit, token, usuarioId){
         new ExerciseData().getDadosByIdUnit((exercises) =>{
             cb(exercises);
-        }, idUnit);
+        }, idUnit, token, usuarioId);
     }
-    static addExerciseNome(idExercise){
-        let nomeExercise = new ExerciseData().getNomeById(idExercise);
+    static addExerciseNome(idExercise, token, usuarioId){
+        let nomeExercise = new ExerciseData().getNomeById(idExercise, token, usuarioId);
         return ExerciseView.montaNomeExercise(nomeExercise);
     }
 }
