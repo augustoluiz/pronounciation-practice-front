@@ -43,7 +43,7 @@ class RequestLayout {
         }
     }
 
-    static POST(url, dados, token, usuarioId) {
+    static POST(url, dados, token, usuarioId, cb) {
         let xhr = new XMLHttpRequest();
         let formData = new FormData();
         formData.append("usuarioId", usuarioId);
@@ -51,13 +51,14 @@ class RequestLayout {
         xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
         xhr.setRequestHeader('Accept', 'application/json');
-        xhr.send(JSON.stringify(dados));
+        xhr.send(JSON.stringify({"usuarioId":dados.usuarioId,"questaoId":dados.questaoId,"pontuacao":dados.pontuacao,"dataAtualizacao":dados.dataAtualizacao}));
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4) {
                 let response = [];
                 if (xhr.status == 200) {
                     response = JSON.parse(xhr.responseText);
                 }
+                cb(response)
             }
         }
     }

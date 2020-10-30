@@ -5,7 +5,7 @@ body {
 
   .navbar {
     visibility: hidden;
-    background-color: #2a7ae4;
+    background-color: #222629;
     display: flex !important;
     flex-wrap: wrap;
     flex-flow: row;
@@ -23,7 +23,7 @@ body {
     padding: 0;
     margin-top: -12%;
     width: 400px;
-    background-color: #2a7ae4;
+    background-color: #222629;
     position: fixed;
     height: 100%;
     overflow:auto;
@@ -41,14 +41,14 @@ body {
     text-align: center;
     margin-left: 30%;
     margin-right: 30%;
-    background-color: #2a7ae4;
+    background-color: #222629;
     border-color: #ffffff;
     color: #ffffff;
   }
 
   .menu-lateral .log-out button:hover {
     background-color: #ffffff;
-    color: #2a7ae4;
+    color: #222629;
   }
 
   .menu-lateral a {
@@ -74,7 +74,7 @@ body {
 
   .menu-lateral a.selecionado {
     background-color: #ffffff;
-    color: #2a7ae4;
+    color: #222629;
   }
 
   .menu-lateral a:link {
@@ -83,7 +83,7 @@ body {
   
   .menu-lateral a:hover:not(.selecionado) {
     background-color: #ffffff;
-    color: #19529c;
+    color: #222629;
   }
   
   div.content {
@@ -261,11 +261,11 @@ body {
   }
   
   .progress {
-      background-color: #639eec !important;
+      background-color: #000 !important;
   }
 
   .progress-bar {
-      background-color: #19529c !important;
+      background-color: #9de482 !important;
   }
 
   @media screen and (max-width: 1120px) {

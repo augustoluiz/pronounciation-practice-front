@@ -173,11 +173,11 @@ class UserQuestionsData{
         //return dataUserQuestions.filter(exercise => exercise.idExercise == exerciseId);
     }
 
-    getQtdQuestionsByExerciseId(exerciseId){
-        return 10;
+    getQtdQuestionsByExerciseId(cb, exerciseId, token, usuarioId){
+        QuestionService.getQtdQuestionsByExerciseId(cb, exerciseId, token, usuarioId);
     }
 
-    getQtdQuestionsOkByExerciseId(exerciseId){
-        return 1;
+    getQtdQuestionsOkByExerciseId(cb, exerciseId, token, usuarioId){
+        QuestionService.getQtdQuestionsOkByExerciseId(cb, exerciseId, token, usuarioId);
     }
 }

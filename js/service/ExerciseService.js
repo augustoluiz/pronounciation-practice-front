@@ -1,5 +1,5 @@
 const rotas_exercise = {
-    "lista_exercicios_por_id" : `http://localhost:8080/v1/exercicio/unidade/`
+    "lista_exercicios_por_id" : `https://pronounciation-practice.herokuapp.com/v1/exercicio/unidade/`
 };
 
 class ExerciseService {

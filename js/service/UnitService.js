@@ -1,6 +1,6 @@
 const rotas = {
-    "lista_unidades" : `http://localhost:8080/v1/unidade/?usuarioId=`,
-    "nome_unidade": `http://localhost:8080/v1/unidade/nome/`
+    "lista_unidades" : `https://pronounciation-practice.herokuapp.com/v1/unidade/?usuarioId=`,
+    "nome_unidade": `https://pronounciation-practice.herokuapp.com/v1/unidade/nome/`
 };
 
 class UnitService {

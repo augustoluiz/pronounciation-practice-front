@@ -9,10 +9,18 @@ class ExerciseView{
                              `<div class="card-body">`+
                                 `<div id="exercicios-qtd-questoes">`;
             if(!exercise.bloqueado){
-                let qtdQuestions = new UserQuestionsData().getQtdQuestionsByExerciseId(exercise.id);
-                let qtdQuestionsOk = new UserQuestionsData().getQtdQuestionsOkByExerciseId(exercise.id);
-                let progresso = (qtdQuestionsOk * 100) / qtdQuestions;
-                html += `<h1>${qtdQuestionsOk}/${qtdQuestions}</h1>`+
+                new UserQuestionsData().getQtdQuestionsByExerciseId((qtdQuestao) => {
+                    let qtdQuestions = 0; 
+                    qtdQuestions = qtdQuestao;
+                    new UserQuestionsData().getQtdQuestionsOkByExerciseId((qtdQOK) => {
+                        let qtdQuestionsOk = 0;
+                        qtdQuestionsOk = qtdQOK;
+                        document.cookie = `qtdQuestionsOk= ${qtdQuestionsOk}; SameSite=None; Secure`;
+                        document.cookie = `qtdQuestions= ${qtdQuestions}; SameSite=None; Secure`;
+                    }, exercise.id, global_user.token, global_user.id);
+                }, exercise.id, global_user.token, global_user.id);
+                let progresso = (document.cookie.split(";")[3].split("=")[1] * 100) / document.cookie.split(";")[2].split("=")[1];
+                html += `<h1>${document.cookie.split(";")[3].split("=")[1]}/${document.cookie.split(";")[2].split("=")[1]}</h1>`+
                         `<h2>questions</h2>`+
                         `</div>`;
                 html += `<div class="barra-progresso">`+

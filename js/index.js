@@ -6,7 +6,7 @@ let global_user = {
 }
 let global_token
 
-function validaLogin(event){
+async function validaLogin(event){
     event.preventDefault();
     console.log(global_user)
     global_user.login = event.target.inputEmail.value;
@@ -14,7 +14,7 @@ function validaLogin(event){
 
     console.log(global_user)
 
-    RequestLayout.TOKEN("http://localhost:8080/oauth/token", global_user.login, global_user.password, (xhr) => {
+    RequestLayout.TOKEN("https://pronounciation-practice.herokuapp.com/oauth/token", global_user.login, global_user.password, (xhr) => {
         if(xhr.status == 200){
             global_token = JSON.parse(xhr.responseText).access_token
 
@@ -35,8 +35,8 @@ function validaLogin(event){
     
 }
 
-function capturaUserId(){
-    RequestLayout.GETID(`http://localhost:8080/v1/usuario/findIdByLoginSenha/?usuarioLogin=${global_user.login}&usuarioSenha=${global_user.password}`, (id) => {
+async function capturaUserId(){
+    RequestLayout.GETID(`https://pronounciation-practice.herokuapp.com/v1/usuario/findIdByLoginSenha/?usuarioLogin=${global_user.login}&usuarioSenha=${global_user.password}`, (id) => {
         
         global_user.id = id;
         document.cookie=`user_id= ${global_user.id}; SameSite=None; Secure`;
@@ -49,33 +49,33 @@ function capturaUserId(){
     }, global_user.login, global_user.password, global_token)
 }
 
-function logOut(){
+async function logOut(){
     let linklogin = document.createElement("a");
     linklogin.setAttribute("href", "index.html");
     document.body.appendChild(linklogin);
     linklogin.click();
 }
 
-function initialize() {
+async function initialize() {
     console.log("Nova Pág"+document.cookie)
 //    RequestLayout.TOKEN("http://localhost:8080/oauth/token", global_user.login, global_user.password, (token) => {
 //        global_token = token.access_token
         global_user.id = document.cookie.split(";")[1].split("=")[1];
         global_user.token = document.cookie.split(";")[0].split("=")[1];
         console.table(global_user)
-        addCollapse();
-        addMenuList(global_user.token);
-        carregaExerciciosUnit(1, global_user.token);
+        await addCollapse();
+        await addMenuList(global_user.token);
+        await carregaExerciciosUnit(1, global_user.token);
 //    })
 
 }
 
-function limpaHome() {
+async function limpaHome() {
     let home = document.getElementById('idHome');
     home.innerHTML = '';
 }
 
-function addCollapse() {
+async function addCollapse() {
     let width = window.innerWidth;
     let menuListClasse = document.getElementById('idMenuLateral').classList;
     const classCollapse = 'collapse';
@@ -86,7 +86,7 @@ function addCollapse() {
     }
 }
 
-function addMenuList(token) {
+async function addMenuList(token) {
     let idMenuLateral = document.getElementById('idMenuLateral');
     UnitController.addMenuList((listUnit) => {
         qtdUnit = listUnit.length;
@@ -97,17 +97,17 @@ function addMenuList(token) {
     }, global_user.id, token);
 }
 
-function removeAcaoLink(qtdUnit, token) {
+async function removeAcaoLink(qtdUnit, token) {
     for (let i = 1; i < qtdUnit; i++) {
         let itemMenu = document.getElementById(`idUnitMenu${i}`);
-        itemMenu.addEventListener('click', function (e) {
+        itemMenu.addEventListener('click', async function (e) {
             e.preventDefault()
-            itemMenuClicado(i, qtdUnit - 1, token);
+            await itemMenuClicado(i, qtdUnit, token);
         })
     }
 }
 
-function itemMenuClicado(idUnit, qtdTotal, token) {
+async function itemMenuClicado(idUnit, qtdTotal, token) {
     const classSelecionado = 'selecionado';
     for (let i = 1; i < qtdTotal; i++) {
         let itemMenu = document.getElementById(`idUnitMenu${i}`);
@@ -117,12 +117,12 @@ function itemMenuClicado(idUnit, qtdTotal, token) {
             itemMenu.classList.remove(classSelecionado);
         }
     }
-    limpaHome();
-    carregaExerciciosUnit(idUnit, token);
+    await limpaHome();
+    await carregaExerciciosUnit(idUnit, token);
 }
 
-function carregaExerciciosUnit(idUnit, token) {
-    ExerciseController.addUnitNome((nome) => {
+async function carregaExerciciosUnit(idUnit, token) {
+    await ExerciseController.addUnitNome((nome) => {
         let idHome = document.getElementById('idHome');
         idHome.innerHTML = ExerciseView.montaNomeUnit(nome.nome, idUnit);
         removeAcaoLinkHome(idUnit, token);
@@ -132,38 +132,46 @@ function carregaExerciciosUnit(idUnit, token) {
         idHome.appendChild(divExercicios);
         
     }, idUnit, token, global_user.id)
-    ExerciseController.addExerciseCards((exercises)=>{
+    await ExerciseController.addExerciseCards((exercises)=>{
         //Add ExerciseController.getQtdQuestions
         //Add ExerciseController.getQtdQuestionsOk
         ExerciseView.montaExercises(exercises).forEach(exerciseHTML => {
             let idHomeExercicios = idHome.querySelector('#exercicios');
-            idHomeExercicios.innerHTML += exerciseHTML
+            if (idHomeExercicios == null){
+                carregaExerciciosUnit(idUnit, token)
+            } else {
+                idHomeExercicios.innerHTML += exerciseHTML
+            }
         });
     }, idUnit, token, global_user.id);
-    ExerciseController.getExercisesByIdUnit((exercises) => {
+    await ExerciseController.getExercisesByIdUnit((exercises) => {
         exercises.forEach(exercise => {
             if (!exercise.bloqueado) {
                 let cardExercise = document.getElementById(`idCardExercise${exercise.id}`);
-                cardExercise.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    limpaHome();
-                    itemExercicioClicado(idUnit, exercise.id, token);
-                })
+                if (cardExercise == null){
+                    carregaExerciciosUnit(idUnit, token)
+                } else {
+                    cardExercise.addEventListener('click', async function (e) {
+                        e.preventDefault();
+                        await limpaHome();
+                        await itemExercicioClicado(idUnit, exercise.id, token);
+                    })
+                }
             }
         });
     }, idUnit, token, global_user.id);
 }
 
-function removeAcaoLinkHome(idUnit, token) {
+async function removeAcaoLinkHome(idUnit, token) {
     let nomeHomeUnit = document.getElementById(`idHomeUnit${idUnit}`);
-    nomeHomeUnit.addEventListener('click', function (e) {
+    nomeHomeUnit.addEventListener('click', async function (e) {
         e.preventDefault();
-        limpaHome();
-        carregaExerciciosUnit(idUnit, token);
+        await limpaHome();
+        await carregaExerciciosUnit(idUnit, token);
     })
 }
 
-function itemExercicioClicado(idUnit, idExercise, token) {
+async function itemExercicioClicado(idUnit, idExercise, token) {
     let idHome = document.getElementById('idHome');
     ExerciseController.addUnitNome((nome) => {
         let idHome = document.getElementById('idHome');
@@ -192,7 +200,7 @@ function itemExercicioClicado(idUnit, idExercise, token) {
     
 }
 
-function speechToText(idQuestion) {
+async function speechToText(idQuestion) {
     console.log(global_token)
     let micIcon = document.getElementById(`idMic${idQuestion}`);
     micIcon.style.color = "red";
@@ -215,7 +223,7 @@ function speechToText(idQuestion) {
     startRecognition(textoQuestao, pTextoFalado, micIcon, idQuestion);
 }
 
-function startRecognition(textoQuestao, pTextoFalado, micIcon, idQuestion) {
+async function startRecognition(textoQuestao, pTextoFalado, micIcon, idQuestion) {
     let textoFalado;
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
@@ -240,16 +248,18 @@ function startRecognition(textoQuestao, pTextoFalado, micIcon, idQuestion) {
         let scoreQuestion = document.getElementById(`idScoreQuestion${idQuestion}`);
         scoreQuestion.innerHTML = `${porcentagemAcerto}%`;
         micIcon.style.color = "#999a9b";
-        RequestLayout.POST("http://localhost:8080/v1/usuario-questao", {
+        RequestLayout.POST("https://pronounciation-practice.herokuapp.com/v1/usuario-questao", {
             usuarioId: global_user.id,
             questaoId: idQuestion,
             pontuacao: porcentagemAcerto,
-            dataAtualizacao: "2020-08-29T00:00:00"
-        }, global_token)
+            dataAtualizacao: "2020-10-29T00:00:00"
+        }, global_user.token, global_user.id, (xhr) => {
+            alert(xhr)
+        })
     })
 }
 
-function formataTexto(textoOriginal, textoFalado) {
+async function formataTexto(textoOriginal, textoFalado) {
     let textoOriginalFormatado = textoOriginal.split('');
     let textoFaladoFormatado = textoFalado.split('');
 
@@ -270,7 +280,7 @@ function formataTexto(textoOriginal, textoFalado) {
     return `${textoFaladoFormatado.join('')}`;
 }
 
-function calculaAcerto(textoQuestao, textoFalado) {
+async function calculaAcerto(textoQuestao, textoFalado) {
     let textoQuestaoArray = textoQuestao.split(' ');
     let textoFaladoFormatadoArray = textoFalado.split(' ');
     let qtdAcertos = 0;
@@ -284,7 +294,7 @@ function calculaAcerto(textoQuestao, textoFalado) {
     return (qtdAcertos * 100) / (textoQuestaoArray.length);
 }
 
-function escondeMenuMobile() {
+async function escondeMenuMobile() {
     let width = window.innerWidth;
     if (width <= 700) {
         let btnMenuLateral = document.getElementById('btnMenuLateralMobile');
